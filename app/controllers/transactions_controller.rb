@@ -25,9 +25,16 @@ class TransactionsController < ApplicationController
   # POST /transactions
   # POST /transactions.json
   def create    
-    @transaction = Transaction.new(transaction_params)
-    byebug
+    @transaction = Transaction.new(transaction_params)    
     respond_to do |format|
+      @account = @transaction.account
+      if @transaction.transaction_type == "debit"        
+        @account.balance = @account.balance - @transaction.amount
+        @account.save    
+      else 
+        @account.balance = @account.balance + @transaction.amount
+        @account.save
+      end      
       if @transaction.save
         format.html { redirect_to @transaction, notice: 'Transaction was successfully created.' }
         format.json { render :show, status: :created, location: @transaction }
