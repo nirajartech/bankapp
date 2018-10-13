@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_01_113842) do
+ActiveRecord::Schema.define(version: 2018_10_13_065055) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.integer "customer_id"
+    t.decimal "balance"
+    t.string "account_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string "customer_id"
@@ -24,8 +32,20 @@ ActiveRecord::Schema.define(version: 2018_09_01_113842) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "account_id"
+    t.decimal "amount"
+    t.string "transaction_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
